@@ -82,17 +82,16 @@ jobs:
         done
         popd
 
+    - uses: actions/upload-artifact@v4
+      with:
+        name: packages
+        path: artifacts/package/release
+
     - id: push
       name: Push nuget packages
       run: |
         dotnet nuget push 'artifacts/package/release/*.nupkg' --source https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_KEY }}
         dotnet nuget push 'artifacts/package/release/*.nupkg' --source https://nuget.pkg.github.com/benjamin-hodgson/index.json -k ${{ github.token }}
-
-    - uses: actions/upload-artifact@v4
-      if: steps.pack.conclusion != 'cancelled' && steps.pack.conclusion != 'skipped'
-      with:
-        name: packages
-        path: artifacts/package/release
 
     - name: Create Github Release
       if: steps.push.conclusion == 'success'
