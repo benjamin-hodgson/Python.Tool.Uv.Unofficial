@@ -20,7 +20,7 @@ on:
 
 
 jobs:
-  check-current:
+  version:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.get-version.outputs.version }}
@@ -45,10 +45,10 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    needs: check-current
-    if: ${{ needs.check-current.outputs.version != '' }}
+    needs: version
+    if: ${{ needs.version.outputs.version != '' }}
     env:
-      VERSION: ${{ needs.check-current.outputs.version }}
+      VERSION: ${{ needs.version.outputs.version }}
 
     steps:
     - uses: actions/checkout@v4
