@@ -52,15 +52,11 @@ jobs:
       name: Restore
       run: dotnet restore
 
-    - id: build
-      name: Build
-      run: dotnet build
+    - id: pack
+      name: Download and pack assets
+      run: dotnet pack
       env:
         GITHUB_TOKEN: ${{ github.token }}
-
-    - id: pack
-      name: Pack
-      run: dotnet pack
 
     - name: Attest
       uses: actions/attest-build-provenance@v1
