@@ -69,10 +69,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ github.token }}
 
-    # - name: Attest
-    #   uses: actions/attest-build-provenance@v1
-    #   with:
-    #     subject-path: 'artifacts/package/release/*'
+    - name: Attest
+      uses: actions/attest-build-provenance@v1
+      with:
+        subject-path: 'artifacts/package/release/*'
 
     - name: Compute checksums
       run: |
