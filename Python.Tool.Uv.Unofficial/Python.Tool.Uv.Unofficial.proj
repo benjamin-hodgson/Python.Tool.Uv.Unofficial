@@ -1,11 +1,11 @@
-﻿<Project Sdk="Microsoft.Build.NoTargets">
+<Project Sdk="Microsoft.Build.NoTargets">
 
     <Import Project="build/Python.Tool.Uv.Unofficial.props" />
 
     <PropertyGroup>
         <Authors>benjamin.hodgson</Authors>
         <Copyright>© Benjamin Hodgson, 2024</Copyright>
-        <Description>Build scripts for my own use</Description>
+        <Description>An unofficial redistribution of https://github.com/astral-sh/uv for consumption through Nuget</Description>
 
         <Version>0.5.4</Version>
 
