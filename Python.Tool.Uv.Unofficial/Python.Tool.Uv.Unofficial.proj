@@ -7,8 +7,6 @@
         <Copyright>© Benjamin Hodgson, 2024</Copyright>
         <Description>An unofficial redistribution of https://github.com/astral-sh/uv for consumption through Nuget</Description>
 
-        <Version>0.5.4</Version>
-
         <PackageProjectUrl>https://github.com/benjamin-hodgson/Python.Tool.Uv.Unofficial</PackageProjectUrl>
         <RepositoryUrl>https://github.com/benjamin-hodgson/Python.Tool.Uv.Unofficial</RepositoryUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
