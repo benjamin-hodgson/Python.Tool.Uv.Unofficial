@@ -21,6 +21,7 @@ jobs:
       version: ${{ steps.get-version.outputs.version }}
 
     steps:
+    - uses: actions/checkout@v4
     - name: Get current version
       id: get-version
       run: |
@@ -52,7 +53,7 @@ jobs:
       run: dotnet restore
 
     - id: build
-      name: Pack
+      name: Build
       run: dotnet build
       env:
         GITHUB_TOKEN: ${{ github.token }}
