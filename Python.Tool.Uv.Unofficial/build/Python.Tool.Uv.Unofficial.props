@@ -1,0 +1,32 @@
+<Project>
+
+    <PropertyGroup Condition="'$(PythonUvHostPlatform)' == ''">
+        <PythonUvHostPlatform Condition="$([System.OperatingSystem]::IsLinux())">unknown-linux-gnu</PythonUvHostPlatform>
+        <PythonUvHostPlatform Condition="$([System.OperatingSystem]::IsMacOS())">apple-darwin</PythonUvHostPlatform>
+        <PythonUvHostPlatform Condition="$([System.OperatingSystem]::IsWindows())">pc-windows-msvc</PythonUvHostPlatform>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(PythonUvHostArchitecture)' == ''">
+        <PythonUvHostArchitecture Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'ARM64'">aarch64</PythonUvHostArchitecture>
+        <PythonUvHostArchitecture Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'PPC64le'">powerpc64le</PythonUvHostArchitecture>
+        <PythonUvHostArchitecture Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'S390X'">s390x</PythonUvHostArchitecture>
+        <PythonUvHostArchitecture Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64'">x86_64</PythonUvHostArchitecture>
+        <PythonUvHostArchitecture Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X86'">i686</PythonUvHostArchitecture>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PythonUvHostTriplet Condition="'$(PythonUvHostTriplet)' == ''">$(PythonUvHostArchitecture)-$(PythonUvHostPlatform)</PythonUvHostTriplet>
+        <PythonUvToolDirectory Condition="'$(PythonUvToolDirectory)' == ''">$(MSBuildThisFileDirectory)/../tools/uv-$(PythonUvHostTriplet)</PythonUvToolDirectory>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(PythonUvTool)' == ''">
+        <PythonUvTool>$(PythonUvToolDirectory)/uv</PythonUvTool>
+        <PythonUvTool Condition="$([System.OperatingSystem]::IsWindows())">$(PythonUvToolDirectory)/uv.exe</PythonUvTool>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(PythonUvxTool)' == ''">
+        <PythonUvxTool>$(PythonUvToolDirectory)/uvx</PythonUvxTool>
+        <PythonUvxTool Condition="$([System.OperatingSystem]::IsWindows())">$(PythonUvToolDirectory)/uvx.exe</PythonUvxTool>
+    </PropertyGroup>
+
+</Project>

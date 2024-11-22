@@ -1,0 +1,5 @@
+<Project>
+
+    <Import Project="$(MSBuildThisFileDirectory)/../build/Python.Tool.Uv.Unofficial.props" />
+
+</Project>

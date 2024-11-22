@@ -9,19 +9,85 @@ permissions:
 
 
 on:
-  push:
-    branches: [ main ]
-    tags:
-      - v*
-  pull_request:
-    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * *'
   workflow_dispatch:
 
 
 jobs:
+  check-current:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
+
+    steps:
+    - name: Get current version
+      id: get-version
+      run: |
+        version=$(gh release view --repo astral-sh/uv --json name --jq ".name")
+        # if we didn't already release $version from this repo, set the output param
+        gh release view $version || echo version=$version >> $GITHUB_OUTPUT
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+
   build:
-    uses: benjamin-hodgson/BuildScripts/.github/workflows/dotnet.yml@main
-    with:
-      DOCS_FOLDER: UNDEFINED
-    secrets:
-      NUGET_KEY: ${{ secrets.NUGET_KEY }}
+    runs-on: ubuntu-latest
+    needs: check-current
+    if: ${{ needs.check-current.outputs.version != '' }}
+    env:
+      VERSION: ${{ needs.check-current.outputs.version }}
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0
+
+    - id: restore
+      name: Restore
+      run: dotnet restore
+
+    - id: build
+      name: Pack
+      run: dotnet build
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+    - id: pack
+      name: Pack
+      run: dotnet pack
+
+    - name: Attest
+      uses: actions/attest-build-provenance@v1
+      with:
+        subject-path: 'artifacts/package/release/*'
+
+    - name: Compute checksums
+      run: |
+        pushd artifacts/package/release
+        for file in *;
+          do sha256sum -b $file > $file.sha256;
+        done
+        popd
+
+    - id: push
+      name: Push nuget packages
+      run: |
+        dotnet nuget push 'artifacts/package/release/*.nupkg' --source https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_KEY }}
+        dotnet nuget push 'artifacts/package/release/*.nupkg' --source https://nuget.pkg.github.com/benjamin-hodgson/index.json -k ${{ github.token }}
+
+    - uses: actions/upload-artifact@v4
+      if: steps.pack.conclusion != 'cancelled' && steps.pack.conclusion != 'skipped'
+      with:
+        name: packages
+        path: artifacts/package/release
+
+    - name: Create Github Release
+      if: steps.push.conclusion == 'success'
+      run: gh release create $VERSION ./artifacts/package/release/*
+      env:
+        GITHUB_TOKEN: ${{ github.token }}

@@ -1,0 +1,137 @@
+﻿<Project Sdk="Microsoft.Build.NoTargets">
+
+    <Import Project="build/Python.Tool.Uv.Unofficial.props" />
+
+    <PropertyGroup>
+        <Authors>benjamin.hodgson</Authors>
+        <Copyright>© Benjamin Hodgson, 2024</Copyright>
+        <Description>Build scripts for my own use</Description>
+
+        <Version>0.5.4</Version>
+
+        <PackageProjectUrl>https://github.com/benjamin-hodgson/Python.Tool.Uv.Unofficial</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/benjamin-hodgson/Python.Tool.Uv.Unofficial</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageTags>python;uv</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+
+        <TargetFramework>netstandard1.0</TargetFramework>
+        <IsPackable>true</IsPackable>
+        <DevelopmentDependency>true</DevelopmentDependency>
+        <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="../README.md">
+            <Pack>true</Pack>
+            <PackagePath>README.md</PackagePath>
+        </None>
+        <None Include="build/**/*">
+            <Pack>true</Pack>
+            <PackagePath>build</PackagePath>
+        </None>
+        <None Include="buildMultitargeting/**/*">
+            <Pack>true</Pack>
+            <PackagePath>buildMultitargeting</PackagePath>
+        </None>
+    </ItemGroup>
+
+    <Target Name="ListUvAssets">
+        <PropertyGroup>
+            <_GhReleaseViewJqExpr>.assets.[].name | select(test("uv-.*?\.(tar\.gz|zip)(\.sha256)?"))</_GhReleaseViewJqExpr>
+            <_GhReleaseViewJqExpr>$(_GhReleaseViewJqExpr.Replace('\', '\\'))</_GhReleaseViewJqExpr>
+        </PropertyGroup>
+
+        <MakeDir Directories="$(IntermediateOutputPath)" />
+        <Exec Command="gh release view $(Version) --repo astral-sh/uv --json assets --jq '$(_GhReleaseViewJqExpr)' > $(IntermediateOutputPath)assets.txt" />
+
+        <ItemGroup>
+            <FileWrites Include="$(IntermediateOutputPath)assets.txt" />
+        </ItemGroup>
+
+        <ReadLinesFromFile File="$(IntermediateOutputPath)assets.txt" >
+            <Output TaskParameter="Lines" ItemName="UvReleaseFilenames"/>
+        </ReadLinesFromFile>
+    </Target>
+
+    <Target Name="ComputeUvAssetFiles" DependsOnTargets="ListUvAssets">
+        <ItemGroup>
+            <UvReleaseFiles Include="@(UvReleaseFilenames -> '$(IntermediateOutputPath)/uv-assets/%(Identity)')" />
+            <UvChecksumFiles Include="@(UvReleaseFiles)" Condition="$([System.String]::Copy('%(Identity)').EndsWith('.sha256'))" />
+            <UvReleaseAssets Include="@(UvReleaseFiles)" Exclude="@(UvChecksumFiles)" />
+        </ItemGroup>
+    </Target>
+
+    <Target
+        Name="DownloadUvAssets"
+        Inputs="$(IntermediateOutputPath)assets.txt"
+        Outputs="@(UvReleaseFiles)"
+        DependsOnTargets="ComputeUvAssetFiles">
+
+        <Exec Command="gh release download $(Version) --repo astral-sh/uv @(UvReleaseFilenames -> '--pattern %(Identity)', ' ') -D $(IntermediateOutputPath)uv-assets --skip-existing" />
+
+        <ItemGroup>
+            <FileWrites Include="@(UvReleaseFiles)" />
+        </ItemGroup>
+
+    </Target>
+
+    <Target
+        Name="CheckUvAssets"
+        DependsOnTargets="DownloadUvAssets"
+        Inputs="@(UvReleaseFiles)"
+        Outputs="$(IntermediateOutputPath)\checked.txt">
+
+        <Exec
+            Command="sha256sum --check @(UvChecksumFiles, ' ') > $(IntermediateOutputPath)\checked.txt"
+            WorkingDirectory="$(IntermediateOutputPath)uv-assets" />
+
+        <ItemGroup>
+            <FileWrites Include="$(IntermediateOutputPath)/checked.txt" />
+        </ItemGroup>
+
+    </Target>
+
+    <Target
+        Name="ExtractUvAssets"
+        BeforeTargets="BeforeBuild"
+        DependsOnTargets="CheckUvAssets"
+        Inputs="@(UvReleaseAssets)"
+        Outputs="$(IntermediateOutputPath)/extracted.txt">
+
+        <ItemGroup>
+            <UvReleaseZipFiles Include="@(UvReleaseAssets)" Condition="'%(Extension)' == '.zip'" />
+            <UvReleaseTarFiles Include="@(UvReleaseAssets)" Exclude="@(UvReleaseZipFiles)" />
+        </ItemGroup>
+
+        <Unzip
+            SourceFiles="@(UvReleaseZipFiles)"
+            DestinationFolder="$(IntermediateOutputPath)/tools/%(Filename)" />
+
+        <Exec
+            Command="tar -xzf %(UvReleaseTarFiles.Filename)%(UvReleaseTarFiles.Extension) -C $(IntermediateOutputPath)tools"
+            WorkingDirectory="$(IntermediateOutputPath)uv-assets" />
+
+        <WriteLinesToFile
+            File="$(IntermediateOutputPath)/extracted.txt"
+            Lines="@(UvReleaseAssets->'%(Filename)%(Extension)')"
+            Overwrite="true"
+            WriteOnlyWhenDifferent="true" />
+
+        <ItemGroup>
+            <FileWrites Include="$(IntermediateOutputPath)/extracted.txt" />
+            <FileWrites Include="$(IntermediateOutputPath)/tools/**/*" />
+        </ItemGroup>
+
+    </Target>
+
+    <Target Name="ComputeToolsContent" BeforeTargets="BeforeBuild" DependsOnTargets="ExtractUvAssets">
+        <ItemGroup>
+            <None Include="$(IntermediateOutputPath)/tools/**/*">
+                <Pack>true</Pack>
+                <PackagePath>tools</PackagePath>
+            </None>
+        </ItemGroup>
+    </Target>
+
+</Project>
