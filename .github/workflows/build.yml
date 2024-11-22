@@ -12,6 +12,11 @@ on:
   schedule:
     - cron: '0 0 * * *'
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Upstream uv version (leave blank for latest)'
+        required: false
+        type: string
 
 
 jobs:
@@ -25,11 +30,14 @@ jobs:
     - name: Get current version
       id: get-version
       run: |
-        version=$(gh release view --repo astral-sh/uv --json name --jq ".name")
+        if [[ -z $version ]]; then
+          version=$(gh release view --repo astral-sh/uv --json name --jq ".name")
+        fi
         # if we didn't already release $version from this repo, set the output param
         gh release view $version || echo version=$version >> $GITHUB_OUTPUT
       env:
         GITHUB_TOKEN: ${{ github.token }}
+        VERSION: ${{ inputs.version }}
 
 
   build:
@@ -58,10 +66,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ github.token }}
 
-    - name: Attest
-      uses: actions/attest-build-provenance@v1
-      with:
-        subject-path: 'artifacts/package/release/*'
+    # - name: Attest
+    #   uses: actions/attest-build-provenance@v1
+    #   with:
+    #     subject-path: 'artifacts/package/release/*'
 
     - name: Compute checksums
       run: |
