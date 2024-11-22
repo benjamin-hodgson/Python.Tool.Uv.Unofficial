@@ -30,9 +30,8 @@ jobs:
     - name: Get current version
       id: get-version
       run: |
-        if [[ -z $version ]]; then
-          version=$(gh release view --repo astral-sh/uv --json name --jq ".name")
-        fi
+        versionOverride="${{ inputs.version }}"
+        version="${versionOverride:-$(gh release view --repo astral-sh/uv --json name --jq ".name")}"
 
         echo Version $version >> $GITHUB_STEP_SUMMARY
 
@@ -40,7 +39,6 @@ jobs:
         gh release view $version || echo version=$version >> $GITHUB_OUTPUT
       env:
         GITHUB_TOKEN: ${{ github.token }}
-        VERSION: ${{ inputs.version }}
 
 
   build:
