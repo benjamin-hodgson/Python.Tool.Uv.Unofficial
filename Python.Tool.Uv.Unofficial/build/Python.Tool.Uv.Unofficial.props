@@ -1,5 +1,6 @@
 <Project>
 
+    <!-- keep in sync with logic in Program.cs -->
     <PropertyGroup Condition="'$(PythonUvHostPlatform)' == ''">
         <PythonUvHostPlatform Condition="$([System.OperatingSystem]::IsLinux())">unknown-linux-gnu</PythonUvHostPlatform>
         <PythonUvHostPlatform Condition="$([System.OperatingSystem]::IsMacOS())">apple-darwin</PythonUvHostPlatform>
@@ -16,7 +17,7 @@
 
     <PropertyGroup>
         <PythonUvHostTriplet Condition="'$(PythonUvHostTriplet)' == ''">$(PythonUvHostArchitecture)-$(PythonUvHostPlatform)</PythonUvHostTriplet>
-        <PythonUvToolDirectory Condition="'$(PythonUvToolDirectory)' == ''">$(MSBuildThisFileDirectory)/../tools/uv-$(PythonUvHostTriplet)</PythonUvToolDirectory>
+        <PythonUvToolDirectory Condition="'$(PythonUvToolDirectory)' == ''">$(MSBuildThisFileDirectory)/../tools/net8.0/any/uv-$(PythonUvHostTriplet)</PythonUvToolDirectory>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(PythonUvTool)' == ''">
