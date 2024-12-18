@@ -17,7 +17,7 @@
 
     <PropertyGroup>
         <PythonUvHostTriplet Condition="'$(PythonUvHostTriplet)' == ''">$(PythonUvHostArchitecture)-$(PythonUvHostPlatform)</PythonUvHostTriplet>
-        <PythonUvToolDirectory Condition="'$(PythonUvToolDirectory)' == ''">$(MSBuildThisFileDirectory)/../tools/net8.0/any/uv-$(PythonUvHostTriplet)</PythonUvToolDirectory>
+        <PythonUvToolDirectory Condition="'$(PythonUvToolDirectory)' == ''">$(MSBuildThisFileDirectory)/../tools/uv-$(PythonUvHostTriplet)</PythonUvToolDirectory>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(PythonUvTool)' == ''">

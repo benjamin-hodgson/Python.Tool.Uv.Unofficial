@@ -1,6 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.Build.NoTargets">
 
     <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <Authors>benjamin.hodgson</Authors>
         <Copyright>© Benjamin Hodgson, 2024</Copyright>
         <Description>An unofficial redistribution of https://github.com/astral-sh/uv for consumption through Nuget</Description>
@@ -11,13 +12,8 @@
         <PackageTags>python;uv</PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
 
-        <TargetFramework>net8.0</TargetFramework>
-        <OutputType>Exe</OutputType>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-
         <IsPackable>true</IsPackable>
-        <PackAsTool>true</PackAsTool>
-        <ToolCommandName>dotnet-uv</ToolCommandName>
+        <DevelopmentDependency>true</DevelopmentDependency>
     </PropertyGroup>
 
     <ItemGroup>
@@ -137,6 +133,8 @@
             <None Include="@(_ExtractedUvAsset)">
                 <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
                 <Link>%(RecursiveDir)/%(Filename)%(Extension)</Link>
+                <Pack>true</Pack>
+                <PackagePath>tools/%(RecursiveDir)/%(Filename)%(Extension)</PackagePath>
             </None>
         </ItemGroup>
     </Target>

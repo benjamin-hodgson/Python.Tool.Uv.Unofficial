@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Python.Tool.Uv.Unofficial", "Python.Tool.Uv.Unofficial\Python.Tool.Uv.Unofficial.csproj", "{4AE50CD4-92B2-4756-8C15-AD551C2009A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Python.Tool.Uv.Unofficial", "Python.Tool.Uv.Unofficial\Python.Tool.Uv.Unofficial.proj", "{4AE50CD4-92B2-4756-8C15-AD551C2009A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Python.Tool.Uv.Unofficial.DotNetCli", "Python.Tool.Uv.Unofficial.DotNetCli\Python.Tool.Uv.Unofficial.DotNetCli.csproj", "{F2BDA2E5-AA5C-477A-95CA-AFB79A86066E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +20,9 @@ Global
 		{4AE50CD4-92B2-4756-8C15-AD551C2009A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AE50CD4-92B2-4756-8C15-AD551C2009A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AE50CD4-92B2-4756-8C15-AD551C2009A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2BDA2E5-AA5C-477A-95CA-AFB79A86066E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2BDA2E5-AA5C-477A-95CA-AFB79A86066E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2BDA2E5-AA5C-477A-95CA-AFB79A86066E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2BDA2E5-AA5C-477A-95CA-AFB79A86066E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
