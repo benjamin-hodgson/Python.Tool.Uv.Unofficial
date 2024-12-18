@@ -14,6 +14,7 @@
 
         <IsPackable>true</IsPackable>
         <DevelopmentDependency>true</DevelopmentDependency>
+        <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     </PropertyGroup>
 
     <ItemGroup>
@@ -96,7 +97,6 @@
 
     <Target
         Name="ExtractUvAssets"
-        BeforeTargets="BeforeBuild"
         DependsOnTargets="CheckUvAssets"
         Inputs="@(UvReleaseAssets)"
         Outputs="$(IntermediateOutputPath)/extracted.txt">
@@ -134,7 +134,7 @@
                 <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
                 <Link>%(RecursiveDir)/%(Filename)%(Extension)</Link>
                 <Pack>true</Pack>
-                <PackagePath>tools/%(RecursiveDir)/%(Filename)%(Extension)</PackagePath>
+                <PackagePath>tools/%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
             </None>
         </ItemGroup>
     </Target>
