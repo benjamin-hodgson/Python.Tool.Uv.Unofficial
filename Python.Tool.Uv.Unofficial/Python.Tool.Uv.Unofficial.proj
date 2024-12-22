@@ -134,7 +134,7 @@
                 <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
                 <Link>%(RecursiveDir)/%(Filename)%(Extension)</Link>
                 <Pack>true</Pack>
-                <PackagePath>tools/%(RecursiveDir)</PackagePath>
+                <PackagePath>tools</PackagePath>
             </None>
         </ItemGroup>
     </Target>
