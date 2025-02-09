@@ -22,7 +22,7 @@ string GetPlatform()
             ? "apple-darwin"
             : OperatingSystem.IsWindows()
                 ? "pc-windows-msvc"
-                : throw new NotImplementedException();
+                : throw new NotImplementedException("Unsupported OS");
 
 string GetAbi()
     => (IsGnu() ? "gnu" : "musl")
@@ -51,10 +51,5 @@ string GetArchitecture()
         Architecture.X64 => "x86_64",
         Architecture.Arm => "arm",
         Architecture.Arm64 => "aarch64",
-        Architecture.Wasm => throw new NotImplementedException(),
-        Architecture.S390x => "s390x",
-        Architecture.LoongArch64 => throw new NotImplementedException(),
-        Architecture.Armv6 => throw new NotImplementedException(),
-        Architecture.Ppc64le => "powerpc64le",
-        _ => throw new NotImplementedException()
+        _ => throw new NotImplementedException("Unsupported architecture")
     };
