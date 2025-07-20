@@ -1,16 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Authors>benjamin.hodgson</Authors>
-        <Copyright>© Benjamin Hodgson, 2024</Copyright>
-        <Description>An unofficial redistribution of https://github.com/astral-sh/uv for consumption through Nuget</Description>
-
-        <PackageProjectUrl>https://github.com/benjamin-hodgson/Python.Tool.Uv.Unofficial</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/benjamin-hodgson/Python.Tool.Uv.Unofficial</RepositoryUrl>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageTags>python;uv</PackageTags>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
-
         <TargetFramework>net8.0</TargetFramework>
         <RollForward>Major</RollForward>
         <OutputType>Exe</OutputType>

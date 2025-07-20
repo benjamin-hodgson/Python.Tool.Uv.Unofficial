@@ -2,15 +2,6 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Authors>benjamin.hodgson</Authors>
-        <Copyright>© Benjamin Hodgson, 2024</Copyright>
-        <Description>An unofficial redistribution of https://github.com/astral-sh/uv for consumption through Nuget</Description>
-
-        <PackageProjectUrl>https://github.com/benjamin-hodgson/Python.Tool.Uv.Unofficial</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/benjamin-hodgson/Python.Tool.Uv.Unofficial</RepositoryUrl>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageTags>python;uv</PackageTags>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
 
         <IsPackable>true</IsPackable>
         <DevelopmentDependency>true</DevelopmentDependency>

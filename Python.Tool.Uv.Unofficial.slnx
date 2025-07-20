@@ -1,0 +1,4 @@
+<Solution>
+    <Project Path="Python.Tool.Uv.Unofficial.DotNetCli/Python.Tool.Uv.Unofficial.DotNetCli.csproj" />
+    <Project Path="Python.Tool.Uv.Unofficial/Python.Tool.Uv.Unofficial.proj" Type="C#" />
+</Solution>
