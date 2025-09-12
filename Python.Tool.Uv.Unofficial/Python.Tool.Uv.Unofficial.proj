@@ -33,7 +33,7 @@
     <Target Name="ListUvAssets" DependsOnTargets="CheckVersion">
         <PropertyGroup>
             <!-- exclude armv7, ppc, and s390 as they are less widely used and push the nuget size over the 250MB limit -->
-            <_GhReleaseViewJqExpr>.assets.[].name | select(test("uv-.*?\.(tar\.gz|zip)(\.sha256)?") and (contains("armv7") | not) and (contains("powerpc") | not) and (contains("s390x") | not))</_GhReleaseViewJqExpr>
+            <_GhReleaseViewJqExpr>.assets.[].name | select(test("uv-.*?\.(tar\.gz|zip)(\.sha256)?") and (contains("armv7") | not) and (contains("powerpc") | not) and (contains("s390x") | not) and (contains("riscv") | not))</_GhReleaseViewJqExpr>
             <_GhReleaseViewJqExpr>$(_GhReleaseViewJqExpr.Replace('\', '\\'))</_GhReleaseViewJqExpr>
         </PropertyGroup>
 
