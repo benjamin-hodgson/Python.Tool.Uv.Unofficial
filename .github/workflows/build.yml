@@ -84,11 +84,18 @@ jobs:
       with:
         name: packages
         path: artifacts/package/release
+        
+    - id: nuget_login
+      name: NuGet OIDC Login
+      if: ${{ github.ref_type == 'tag' }}
+      uses: NuGet/login@v1
+      with:
+        user: benjamin.hodgson
 
     - id: push
       name: Push nuget packages
       run: |
-        dotnet nuget push 'artifacts/package/release/*.nupkg' --source https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_KEY }}
+        dotnet nuget push 'artifacts/package/release/*.nupkg' --source https://api.nuget.org/v3/index.json -k ${{ steps.nuget_login.outputs.NUGET_API_KEY }}
         dotnet nuget push 'artifacts/package/release/*.nupkg' --source https://nuget.pkg.github.com/benjamin-hodgson/index.json -k ${{ github.token }}
 
     - name: Create Github Release
