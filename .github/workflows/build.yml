@@ -84,10 +84,9 @@ jobs:
       with:
         name: packages
         path: artifacts/package/release
-        
+
     - id: nuget_login
       name: NuGet OIDC Login
-      if: ${{ github.ref_type == 'tag' }}
       uses: NuGet/login@v1
       with:
         user: benjamin.hodgson
